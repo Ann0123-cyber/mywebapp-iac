@@ -123,9 +123,9 @@ resource "libvirt_domain" "db" {
 }
 
 output "worker_ip" {
-  value = libvirt_domain.worker.network_interface[0].addresses[0]
+  value = length(libvirt_domain.worker.network_interface[0].addresses) > 0 ? libvirt_domain.worker.network_interface[0].addresses[0] : "pending"
 }
 
 output "db_ip" {
-  value = libvirt_domain.db.network_interface[0].addresses[0]
+  value = length(libvirt_domain.db.network_interface[0].addresses) > 0 ? libvirt_domain.db.network_interface[0].addresses[0] : "pending"
 }
