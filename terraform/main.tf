@@ -64,6 +64,7 @@ resource "libvirt_domain" "worker" {
   name   = "worker"
   memory = "1024"
   vcpu   = 1
+  machine = "pc"
 
   cloudinit = libvirt_cloudinit_disk.worker_init.id
 
@@ -93,6 +94,7 @@ resource "libvirt_domain" "db" {
   name   = "db"
   memory = "1024"
   vcpu   = 1
+  machine = "pc"
 
   cloudinit = libvirt_cloudinit_disk.db_init.id
 
