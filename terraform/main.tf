@@ -11,20 +11,34 @@ provider "libvirt" {
   uri = "qemu:///system"
 }
 
+resource "libvirt_volume" "worker_base" {
+  name   = "worker-base.qcow2"
+  pool   = "default"
+  source = var.base_image_path
+  format = "qcow2"
+}
+
 resource "libvirt_volume" "worker_disk" {
   name           = "worker.qcow2"
   pool           = "default"
-  source         = var.base_image_path
+  base_volume_id = libvirt_volume.worker_base.id
   format         = "qcow2"
-  size   = 10737418240
+  size           = 10737418240
+}
+
+resource "libvirt_volume" "db_base" {
+  name   = "db-base.qcow2"
+  pool   = "default"
+  source = var.base_image_path
+  format = "qcow2"
 }
 
 resource "libvirt_volume" "db_disk" {
   name           = "db.qcow2"
   pool           = "default"
-  source         = var.base_image_path
+  base_volume_id = libvirt_volume.db_base.id
   format         = "qcow2"
-  size   = 10737418240
+  size           = 10737418240
 }
 
 data "template_file" "worker_cloud_init" {
