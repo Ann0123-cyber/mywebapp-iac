@@ -17,7 +17,4 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
     }
 
-    location /health {
-        return 404;
-    }
 }
