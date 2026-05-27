@@ -5,5 +5,5 @@ variable "base_image_path" {
 
 variable "ansible_public_key" {
   description = "SSH public key for ansible user"
-  default     = "ssh-ed25519 AAAAC3NZaC112DI1NTE5AAAAIMA/GqYtmjT8INwMTlu8dUPyyPK4+@KLbbTikD0RD6KX ansible"
+  default     = "AAAAC3NzaC1lZDI1NTE5AAAAIMA/GqYtmjT8INwMTlu8dUPyyPK4+0KLbbTikD0RD6KX"
 }
