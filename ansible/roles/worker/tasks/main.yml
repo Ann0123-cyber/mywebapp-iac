@@ -1,0 +1,75 @@
+---
+- name: Install nginx
+  apt:
+    name: nginx
+    state: present
+
+- name: Install app dependencies
+  apt:
+    name:
+      - python3
+      - python3-pip
+      - python3-venv
+    state: present
+
+- name: Create app user
+  user:
+    name: app
+    shell: /usr/sbin/nologin
+    system: true
+
+- name: Create operator user
+  user:
+    name: operator
+    shell: /bin/bash
+    password: "$6$XORDFnuQ4V90B3WZ$VgPnXtd/3I..v.nZ9cpaWGD6UufkBdhSy3bW5teNiGg3jL7fdiHuUu0dTFdtnC4iVmM6B2TAdHGkKKK3.watR."
+
+- name: Configure operator sudo
+  copy:
+    content: |
+      operator ALL=(ALL) NOPASSWD: /bin/systemctl start mywebapp, /bin/systemctl stop mywebapp, /bin/systemctl restart mywebapp, /bin/systemctl status mywebapp, /bin/systemctl reload nginx
+    dest: /etc/sudoers.d/operator
+    mode: '0440'
+
+- name: Create app directory
+  file:
+    path: /opt/mywebapp
+    state: directory
+    owner: app
+    group: app
+    mode: '0755'
+
+- name: Configure nginx
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/sites-available/mywebapp
+    mode: '0644'
+  notify: restart nginx
+
+- name: Enable nginx site
+  file:
+    src: /etc/nginx/sites-available/mywebapp
+    dest: /etc/nginx/sites-enabled/mywebapp
+    state: link
+  notify: restart nginx
+
+- name: Remove default nginx site
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+  notify: restart nginx
+
+- name: Start and enable nginx
+  systemd:
+    name: nginx
+    state: started
+    enabled: true
+
+- name: Create gradebook file
+  copy:
+    content: "18\n"
+    dest: /home/student/gradebook
+    owner: root
+    group: root
+    mode: '0644'
+  ignore_errors: true

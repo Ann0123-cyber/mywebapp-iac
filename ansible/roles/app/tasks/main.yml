@@ -1,0 +1,40 @@
+---
+- name: Copy app files
+  copy:
+    src: "{{ item }}"
+    dest: /opt/mywebapp/
+    owner: app
+    group: app
+    mode: '0644'
+  with_fileglob:
+    - "files/app.py"
+    - "files/migrate.py"
+    - "files/requirements.txt"
+
+- name: Create virtualenv and install dependencies
+  pip:
+    requirements: /opt/mywebapp/requirements.txt
+    virtualenv: /opt/mywebapp/venv
+    virtualenv_command: python3 -m venv
+
+- name: Configure mywebapp service
+  template:
+    src: ../worker/templates/mywebapp.service.j2
+    dest: /etc/systemd/system/mywebapp.service
+    mode: '0644'
+  notify: restart mywebapp
+
+- name: Run database migration
+  command: /opt/mywebapp/venv/bin/python3 /opt/mywebapp/migrate.py
+    --db-host {{ db_host }}
+    --db-user mywebapp
+    --db-password mywebapp_password
+    --db-name notes
+  become_user: app
+
+- name: Start and enable mywebapp
+  systemd:
+    name: mywebapp
+    state: started
+    enabled: true
+    daemon_reload: true
