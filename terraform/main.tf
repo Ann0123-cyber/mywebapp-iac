@@ -131,19 +131,3 @@ output "worker_ip" {
 output "db_ip" {
   value = length(libvirt_domain.db.network_interface[0].addresses) > 0 ? libvirt_domain.db.network_interface[0].addresses[0] : "pending"
 }
-
-resource "libvirt_volume" "worker_disk" {
-  name   = "worker.qcow2"
-  pool   = "default"
-  source = var.base_image_path
-  format = "qcow2"
-  size   = 10737418240
-}
-
-resource "libvirt_volume" "db_disk" {
-  name   = "db.qcow2"
-  pool   = "default"
-  source = var.base_image_path
-  format = "qcow2"
-  size   = 10737418240
-}
