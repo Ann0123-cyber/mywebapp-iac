@@ -16,7 +16,6 @@ resource "libvirt_volume" "worker_disk" {
   pool           = "default"
   source         = var.base_image_path
   format         = "qcow2"
-  size           = 10737418240
 }
 
 resource "libvirt_volume" "db_disk" {
@@ -24,7 +23,6 @@ resource "libvirt_volume" "db_disk" {
   pool           = "default"
   source         = var.base_image_path
   format         = "qcow2"
-  size           = 10737418240
 }
 
 data "template_file" "worker_cloud_init" {
