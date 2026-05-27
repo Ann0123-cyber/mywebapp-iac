@@ -30,6 +30,7 @@
     --db-user mywebapp 
     --db-password mywebapp_password 
     --db-name notes
+  changed_when: false
 
 - name: Start and enable mywebapp
   systemd:
