@@ -76,11 +76,17 @@
     state: started
     enabled: true
 
+- name: Create student user
+  user:
+    name: student
+    shell: /bin/bash
+    groups: sudo
+    append: true
+
 - name: Create gradebook file
   copy:
     content: "18\n"
     dest: /home/student/gradebook
-    owner: root
-    group: root
+    owner: student
+    group: student
     mode: '0644'
-  ignore_errors: true
