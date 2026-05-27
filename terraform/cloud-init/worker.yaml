@@ -25,5 +25,10 @@ packages:
 
 runcmd:
   - echo "nameserver 8.8.8.8" > /etc/resolv.conf
-  - growpart /dev/vda 1
-  - resize2fs /dev/vda1
+
+growpart:
+  mode: auto
+  devices: ['/']
+  ignore_growroot_disabled: false
+
+resize_rootfs: true
