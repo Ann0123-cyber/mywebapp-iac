@@ -1,0 +1,19 @@
+[Unit]
+Description=Notes Service
+After=network.target
+
+[Service]
+User=app
+Group=app
+WorkingDirectory=/opt/mywebapp
+ExecStart=/opt/mywebapp/venv/bin/python3 /opt/mywebapp/app.py \
+    --host 127.0.0.1 \
+    --port 8000 \
+    --db-host {{ db_host }} \
+    --db-user mywebapp \
+    --db-password mywebapp_password \
+    --db-name notes
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

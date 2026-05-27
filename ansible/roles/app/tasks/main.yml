@@ -25,10 +25,10 @@
   notify: restart mywebapp
 
 - name: Run database migration
-  command: /opt/mywebapp/venv/bin/python3 /opt/mywebapp/migrate.py 
-    --db-host {{ db_host }} 
-    --db-user mywebapp 
-    --db-password mywebapp_password 
+  command: /opt/mywebapp/venv/bin/python3 /opt/mywebapp/migrate.py
+    --db-host {{ db_host }}
+    --db-user mywebapp
+    --db-password mywebapp_password
     --db-name notes
   changed_when: false
 
