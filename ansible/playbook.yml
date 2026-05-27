@@ -1,0 +1,21 @@
+---
+- name: Configure all hosts
+  hosts: all
+  become: true
+  roles:
+    - common
+
+- name: Configure database
+  hosts: db
+  become: true
+  roles:
+    - db
+
+- name: Configure worker
+  hosts: workers
+  become: true
+  vars:
+    db_host: "{{ hostvars[groups['db'][0]]['ansible_host'] }}"
+  roles:
+    - worker
+    - app
