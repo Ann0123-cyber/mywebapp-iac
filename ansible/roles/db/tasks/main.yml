@@ -1,4 +1,10 @@
 ---
+- name: Set DNS server
+  copy:
+    content: "nameserver 8.8.8.8\n"
+    dest: /etc/resolv.conf
+    mode: '0644'
+
 - name: Update apt cache
   apt:
     update_cache: true
