@@ -65,6 +65,7 @@ resource "libvirt_domain" "worker" {
   memory = "1024"
   vcpu   = 1
   machine = "pc"
+  type = "qemu"
 
   cloudinit = libvirt_cloudinit_disk.worker_init.id
 
@@ -95,6 +96,7 @@ resource "libvirt_domain" "db" {
   memory = "1024"
   vcpu   = 1
   machine = "pc"
+  type = "qemu"
 
   cloudinit = libvirt_cloudinit_disk.db_init.id
 
