@@ -44,3 +44,26 @@
     regexp: '^bind-address'
     line: 'bind-address = 0.0.0.0'
   notify: restart mariadb
+
+- name: Install ufw
+  apt:
+    name: ufw
+    state: present
+
+- name: Allow SSH
+  ufw:
+    rule: allow
+    port: '22'
+    proto: tcp
+
+- name: Allow MariaDB only from worker
+  ufw:
+    rule: allow
+    port: '3306'
+    proto: tcp
+    src: "{{ hostvars[groups['workers'][0]]['ansible_host'] }}"
+
+- name: Enable ufw
+  ufw:
+    state: enabled
+    policy: deny

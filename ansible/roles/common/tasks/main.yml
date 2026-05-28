@@ -23,8 +23,21 @@
 - name: Create gradebook file
   copy:
     content: "18\n"
-    dest: /home/student/gradebook
-    owner: root
-    group: root
+    dest: /home/teacher/gradebook
+    owner: teacher
+    group: teacher
     mode: '0644'
-  ignore_errors: true
+
+- name: Enable password authentication for SSH
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#?PasswordAuthentication'
+    line: 'PasswordAuthentication yes'
+  notify: restart sshd
+
+- name: Enable keyboard interactive authentication
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#?KbdInteractiveAuthentication'
+    line: 'KbdInteractiveAuthentication yes'
+  notify: restart sshd
